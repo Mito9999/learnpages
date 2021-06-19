@@ -44,6 +44,53 @@ export const listPages = async () => {
   return res;
 };
 
+type CreatePageData = {
+  title: string;
+  uid: string;
+  image: string;
+  tags: string[];
+  cost: number;
+  hours: number;
+};
+
+export const createPage = async ({
+  title,
+  uid,
+  image,
+  tags,
+  cost,
+  hours,
+}: CreatePageData) => {
+  if (!NOTION_DATABASE_ID) return {};
+
+  const res = await notion.pages.create({
+    parent: { database_id: NOTION_DATABASE_ID },
+    // @ts-ignore
+    properties: {
+      [TABLE_PROPERTIES.title]: {
+        title: [{ type: "text", text: { content: title } }],
+      },
+      [TABLE_PROPERTIES.uid]: {
+        rich_text: [{ type: "text", text: { content: uid } }],
+      },
+      [TABLE_PROPERTIES.image]: { url: image },
+      [TABLE_PROPERTIES.tags]: {
+        multi_select: tags.map((tag) => ({
+          name: tag,
+        })),
+      },
+      [TABLE_PROPERTIES.cost]: {
+        number: cost,
+      },
+      [TABLE_PROPERTIES.hours]: {
+        number: hours,
+      },
+    },
+  });
+
+  return res;
+};
+
 /* 
     Misc. 
 */
