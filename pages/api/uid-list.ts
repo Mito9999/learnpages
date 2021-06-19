@@ -9,5 +9,5 @@ type Data = {
 
 export default function handler(req: NextReq, res: NextRes<Data>) {
   // Fetch UIDs from Notion
-  res.status(200).json({ uids: ["vscode", "cars"] });
+  res.status(200).json({ uids: ["vscode", "test"] });
 }
