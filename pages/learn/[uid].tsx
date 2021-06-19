@@ -8,6 +8,7 @@ import type {
 import { serverUrl } from "@utils/index";
 import { useRouter } from "next/router";
 import type { Data } from "@type/index";
+import Head from "next/head";
 
 const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -25,6 +26,15 @@ const Page: NextPage<Props> = ({ pageData }) => {
         <Spinner />
       ) : (
         <>
+          <Head>
+            <title>Learnpages - {pageData.title}</title>
+            <meta
+              name="description"
+              content={`The best way to ${pageData.title}`}
+            />
+            <link rel="icon" href="/favicon.ico" />
+          </Head>
+
           <Heading>{pageData.title}</Heading>
           <Image src={pageData.image} alt={pageData.title + " cover image"} />
           <HStack spacing="8px" my="10px">
