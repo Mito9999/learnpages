@@ -99,3 +99,7 @@ export const isDev = process.env.NODE_ENV !== "production";
 export const serverUrl = isDev
   ? "http://localhost:3000"
   : "https://learnpages.vercel.app";
+
+export const allLengthsGreaterThanZero = (strings: string[]) => {
+  return strings.every((text) => text.length > 0);
+};
