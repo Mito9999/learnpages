@@ -2,23 +2,13 @@ import type {
   NextApiRequest as NextReq,
   NextApiResponse as NextRes,
 } from "next";
-import { listPages } from "../../utils";
-
-type Data = {
-  title: string;
-  uid: string;
-  image: string;
-  tags: string[];
-  cost: number;
-  hours: number;
-  dateCreated: string;
-  dateEdited: string;
-};
+import { listPages } from "@utils/index";
+import type { Data } from "@type/index";
 
 export default async function handler(req: NextReq, res: NextRes<Data[]>) {
   try {
     const notionRes: any = await listPages();
-    const allResults = notionRes.results.map((result: any) => {
+    const allResults: Data[] = notionRes.results.map((result: any) => {
       const {
         Title: title,
         uid: uID,
@@ -30,7 +20,7 @@ export default async function handler(req: NextReq, res: NextRes<Data[]>) {
         "Edited on": editedOn,
       } = result.properties;
 
-      const formattedResult = {
+      const formattedResult: Data = {
         title: title.title[0].text.content || "",
         uid: uID.rich_text[0].plain_text || "",
         image: image.url || "",

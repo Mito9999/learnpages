@@ -11,9 +11,14 @@ import {
   Text,
   AspectRatio,
 } from "@chakra-ui/react";
-import { serverUrl } from "../utils";
+import { serverUrl } from "@utils/index";
+import type { Data } from "@type/index";
 
-const Home: NextPage = ({ pages }: any) => {
+type Props = {
+  pages: Data[];
+};
+
+const Home: NextPage<Props> = ({ pages }) => {
   return (
     <>
       <Head>
@@ -23,7 +28,7 @@ const Home: NextPage = ({ pages }: any) => {
       </Head>
 
       <SimpleGrid columns={[1, 2, 3]} spacing={6}>
-        {pages.map((page: any) => (
+        {pages.map((page: Data) => (
           <Link key={page.uid} href={`/learn/${page.uid}`} passHref={true}>
             <Box
               borderRadius="20px"
@@ -75,7 +80,7 @@ export const getStaticProps: GetStaticProps = async () => {
     const res = await fetch(serverUrl + "/api/pages");
     if (!res.ok) throw new Error("Not found");
 
-    const pages = await res.json();
+    const pages: Data[] = await res.json();
     return { props: { pages } };
   } catch {
     return { props: { pages: [] } };

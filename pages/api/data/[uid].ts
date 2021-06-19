@@ -2,18 +2,8 @@ import type {
   NextApiRequest as NextReq,
   NextApiResponse as NextRes,
 } from "next";
-import { getPage } from "../../../utils";
-
-type Data = {
-  title: string;
-  uid: string;
-  image: string;
-  tags: string[];
-  cost: number;
-  hours: number;
-  dateCreated: string;
-  dateEdited: string;
-};
+import { getPage } from "@utils/index";
+import type { Data } from "@type/index";
 
 export default async function handler(req: NextReq, res: NextRes<Data>) {
   try {

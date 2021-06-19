@@ -1,14 +1,22 @@
 import { Text, Spinner, Heading, Image, Badge, HStack } from "@chakra-ui/react";
-import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { serverUrl } from "../../utils";
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  GetStaticPropsContext,
+  NextPage,
+} from "next";
+import { serverUrl } from "@utils/index";
 import { useRouter } from "next/router";
+import type { Data } from "@type/index";
 
 const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
 });
 
-const Page: NextPage = ({ pageData }: any) => {
+type Props = { pageData: Data };
+
+const Page: NextPage<Props> = ({ pageData }) => {
   const { isFallback } = useRouter();
 
   return (
@@ -40,14 +48,16 @@ export const getStaticPaths: GetStaticPaths = () => {
   return { paths: [], fallback: true };
 };
 
-export const getStaticProps: GetStaticProps = async (context: any) => {
-  const { uid } = context.params;
+export const getStaticProps: GetStaticProps = async (
+  context: GetStaticPropsContext
+) => {
+  const { uid } = context.params!;
 
   try {
     const res = await fetch(serverUrl + "/api/data/" + uid);
     if (!res.ok) throw new Error("Not found");
 
-    const pageData = await res.json();
+    const pageData: Data = await res.json();
     return { props: { pageData } };
   } catch {
     return { notFound: true };

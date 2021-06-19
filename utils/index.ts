@@ -1,13 +1,11 @@
-// Misc.
-export const serverUrl =
-  process.env.NODE_ENV !== "production"
-    ? "http://localhost:3000"
-    : "https://learnpages.vercel.app";
-
-// Notion
 import { Client } from "@notionhq/client";
 
-const notion = new Client({ auth: process.env.NOTION_API_KEY });
+/*
+    Notion 
+*/
+
+const { NOTION_DATABASE_ID, NOTION_API_KEY } = process.env;
+const notion = new Client({ auth: NOTION_API_KEY });
 
 const TABLE_PROPERTIES = {
   title: "title",
@@ -21,7 +19,6 @@ const TABLE_PROPERTIES = {
 };
 
 export const getPage = async (pageUID: string) => {
-  const { NOTION_DATABASE_ID } = process.env;
   if (!NOTION_DATABASE_ID) return {};
 
   const res = await notion.databases.query({
@@ -34,18 +31,24 @@ export const getPage = async (pageUID: string) => {
     },
   });
 
-  console.log(res);
   return res;
 };
 
 export const listPages = async () => {
-  const { NOTION_DATABASE_ID } = process.env;
   if (!NOTION_DATABASE_ID) return {};
 
   const res = await notion.databases.query({
     database_id: NOTION_DATABASE_ID,
   });
 
-  console.log(res);
   return res;
 };
+
+/* 
+    Misc. 
+*/
+
+export const serverUrl =
+  process.env.NODE_ENV !== "production"
+    ? "http://localhost:3000"
+    : "https://learnpages.vercel.app";
