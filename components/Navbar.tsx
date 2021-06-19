@@ -6,11 +6,11 @@ import { useColorMode } from "@chakra-ui/react";
 const Navbar = () => {
   const { colorMode, setColorMode } = useColorMode();
   return (
-    <Flex my="30px" justify="space-between">
-      <Heading>
+    <Flex my="30px" justify="space-between" direction={["column", "row"]}>
+      <Heading textAlign={["center", "initial"]}>
         <Link href="/">Learnpages</Link>
       </Heading>
-      <HStack spacing="3">
+      <HStack spacing="3" mx={["auto", "initial"]} mt={["15px", "0px"]}>
         <Button
           onClick={() => setColorMode(colorMode === "light" ? "dark" : "light")}
         >
