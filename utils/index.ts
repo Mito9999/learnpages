@@ -48,7 +48,7 @@ export const listPages = async () => {
     Misc. 
 */
 
-export const serverUrl =
-  process.env.NODE_ENV !== "production"
-    ? "http://localhost:3000"
-    : "https://learnpages.vercel.app";
+export const isDev = process.env.NODE_ENV !== "production";
+export const serverUrl = isDev
+  ? "http://localhost:3000"
+  : "https://learnpages.vercel.app";

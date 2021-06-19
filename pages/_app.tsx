@@ -1,10 +1,31 @@
-import { ChakraProvider, Container } from "@chakra-ui/react";
-import type { AppProps } from "next/app";
+import { ColorModeScript } from "@chakra-ui/color-mode";
+import {
+  ChakraProvider,
+  Container,
+  extendTheme,
+  ThemeConfig,
+} from "@chakra-ui/react";
 import Navbar from "@components/Navbar";
+import type { AppProps } from "next/app";
+
+const config: ThemeConfig = {
+  initialColorMode: "light",
+  useSystemColorMode: true,
+};
+
+const theme = extendTheme({
+  config,
+  styles: {
+    global: {
+      body: { overflowX: "hidden !important" },
+    },
+  },
+});
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
+      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       <Container maxW="1200px">
         <Navbar />
         <Component {...pageProps} />
