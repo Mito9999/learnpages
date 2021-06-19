@@ -37,3 +37,15 @@ export const getPage = async (pageUID: string) => {
   console.log(res);
   return res;
 };
+
+export const listPages = async () => {
+  const { NOTION_DATABASE_ID } = process.env;
+  if (!NOTION_DATABASE_ID) return {};
+
+  const res = await notion.databases.query({
+    database_id: NOTION_DATABASE_ID,
+  });
+
+  console.log(res);
+  return res;
+};
