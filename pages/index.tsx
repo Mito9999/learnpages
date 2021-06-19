@@ -22,7 +22,6 @@ const Home: NextPage = ({ pages }: any) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Heading>Learnpages</Heading>
       <SimpleGrid columns={[1, 2, 3]} spacing={6}>
         {pages.map((page: any) => (
           <Link key={page.uid} href={`/learn/${page.uid}`} passHref={true}>
