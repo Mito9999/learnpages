@@ -30,25 +30,48 @@ const Create: NextPage = () => {
   const submitPage = async () => {
     setIsLoadingPostRequest(true);
 
-    console.log({
-      title: formData.title,
-      uid: formData.uid,
-      image: formData.image,
-      tags: formData.tags,
-      cost: Number(formData.cost),
-      hours: Number(formData.hours),
-    });
+    try {
+      const formObject = {
+        title: formData.title,
+        uid: formData.uid,
+        image: formData.image,
+        tags: formData.tags,
+        cost: Number(formData.cost),
+        hours: Number(formData.hours),
+      };
 
-    setTimeout(() => {
-      toast({
-        title: "Submitted page for approval!",
-        description:
-          "You may edit this page at any time through the edit page.",
-        status: "success",
+      const res = await fetch("/api/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formObject),
       });
 
-      setIsLoadingPostRequest(false);
-    }, 1000);
+      const data = await res.json();
+      console.log(data);
+
+      res.ok
+        ? toast({
+            title: "Submitted page for approval!",
+            description:
+              "You may edit this page at any time through the edit page.",
+            status: "success",
+          })
+        : toast({
+            title: "Failed to submit page!",
+            description: "Make sure all inputs are complete. Please try again.",
+            status: "warning",
+          });
+    } catch {
+      toast({
+        title: "An unknown error has occured!",
+        description: "We don't know what happened. Please try again.",
+        status: "error",
+      });
+    }
+
+    setIsLoadingPostRequest(false);
   };
 
   type FormData = {
@@ -106,8 +129,10 @@ const Create: NextPage = () => {
       </Head>
 
       <>
-        <Box mb="50px">
-          <Heading mb="20px">Details</Heading>
+        <Box mb={["20px", "50px"]}>
+          <Heading mb="20px" size="lg">
+            Create a New Page
+          </Heading>
           <Flex direction={["column", "row"]}>
             <FormControl>
               <FormLabel>Page Title</FormLabel>
@@ -144,10 +169,10 @@ const Create: NextPage = () => {
           </Flex>
         </Box>
 
-        <Box mb="50px">
+        <Box mb="20px">
           <Flex direction={["column", "column", "row"]}>
             <Flex flex="2">
-              <FormControl>
+              <FormControl mb={["20px", "0px"]}>
                 <FormLabel>Cover Image URL</FormLabel>
                 <Input
                   type="text"
@@ -164,7 +189,7 @@ const Create: NextPage = () => {
               direction={["column", "row", "row"]}
               flex="2"
             >
-              <FormControl mr="20px">
+              <FormControl mr="20px" mb={["20px", "0px"]}>
                 <FormLabel>Tags</FormLabel>
                 <InputGroup>
                   <Input
@@ -220,7 +245,7 @@ const Create: NextPage = () => {
               align="center"
               flex="1"
               bg="gray.100"
-              mr="20px"
+              mr={["0px", "0px", "0px", "20px"]}
               borderRadius="8px"
               minH="99px"
               my="20px"

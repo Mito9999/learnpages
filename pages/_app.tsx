@@ -17,7 +17,7 @@ const theme = extendTheme({
   config,
   styles: {
     global: {
-      body: { overflowX: "hidden !important" },
+      body: { overflowX: "hidden !important", overflowY: "scroll !important" },
     },
   },
 });
