@@ -1,8 +1,99 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { Heading, Flex } from "@chakra-ui/react";
+import {
+  Heading,
+  Flex,
+  InputRightElement,
+  Text,
+  Box,
+  Button,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  Input,
+  InputGroup,
+  InputLeftAddon,
+  Tag,
+  TagCloseButton,
+  TagLabel,
+  Spacer,
+  useToast,
+} from "@chakra-ui/react";
+import React, { useState } from "react";
 
 const Create: NextPage = () => {
+  const toast = useToast();
+
+  const [isLoadingPostRequest, setIsLoadingPostRequest] =
+    useState<boolean>(false);
+
+  const submitPage = async () => {
+    setIsLoadingPostRequest(true);
+
+    console.log({
+      title: formData.title,
+      uid: formData.uid,
+      image: formData.image,
+      tags: formData.tags,
+      cost: Number(formData.cost),
+      hours: Number(formData.hours),
+    });
+
+    setTimeout(() => {
+      toast({
+        title: "Submitted page for approval!",
+        description:
+          "You may edit this page at any time through the edit page.",
+        status: "success",
+      });
+
+      setIsLoadingPostRequest(false);
+    }, 1000);
+  };
+
+  type FormData = {
+    title: string;
+    uid: string;
+    image: string;
+    tag: string;
+    tags: string[];
+    cost: string; // cast to number
+    hours: string; // cast to number
+  };
+
+  const [formData, setFormData] = useState<FormData>({
+    title: "",
+    uid: "",
+    image: "",
+    tag: "",
+    tags: [],
+    cost: "",
+    hours: "",
+  });
+
+  const handleFormDataChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const addTag = () => {
+    setFormData((prev) => ({
+      ...prev,
+      tags: [...prev.tags, prev.tag],
+      tag: "",
+    }));
+  };
+
+  const removeTag = (text: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      tags: prev.tags.filter((tagText) => tagText !== text),
+    }));
+  };
+
   return (
     <>
       <Head>
@@ -14,14 +105,154 @@ const Create: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Flex
-        justify="center"
-        align="center"
-        direction="column"
-        h="calc(100vh - 103px)"
-      >
-        <Heading>Coming Soon</Heading>
-      </Flex>
+      <>
+        <Box mb="50px">
+          <Heading mb="20px">Details</Heading>
+          <Flex direction={["column", "row"]}>
+            <FormControl>
+              <FormLabel>Page Title</FormLabel>
+              <Input
+                type="text"
+                placeholder="Learn VSCode Shortcuts"
+                id="page-title-input"
+                name="title"
+                value={formData.title}
+                onChange={handleFormDataChange}
+              />
+              <FormHelperText>Try to be unique and creative</FormHelperText>
+            </FormControl>
+            <Spacer m="10px" />
+            <FormControl>
+              <FormLabel>URL</FormLabel>
+              <InputGroup>
+                <InputLeftAddon>/</InputLeftAddon>
+                <Input
+                  type="text"
+                  placeholder="vscode"
+                  value={formData.uid}
+                  name="uid"
+                  onChange={handleFormDataChange}
+                />
+              </InputGroup>
+              <FormHelperText>
+                https://learnpages.vercel.app/learn/
+                <span style={{ fontWeight: 700 }}>
+                  {formData.uid.length > 0 ? formData.uid : "vscode"}
+                </span>
+              </FormHelperText>
+            </FormControl>
+          </Flex>
+        </Box>
+
+        <Box mb="50px">
+          <Flex direction={["column", "column", "row"]}>
+            <Flex flex="2">
+              <FormControl>
+                <FormLabel>Cover Image URL</FormLabel>
+                <Input
+                  type="text"
+                  placeholder="https://code.visualstudio.com/opengraphimg/opengraph-home.png"
+                  name="image"
+                  value={formData.image}
+                  onChange={handleFormDataChange}
+                />
+                <FormHelperText>High quality and expressive</FormHelperText>
+              </FormControl>
+            </Flex>
+            <Flex
+              ml={["0px", "0px", "20px"]}
+              direction={["column", "row", "row"]}
+              flex="2"
+            >
+              <FormControl mr="20px">
+                <FormLabel>Tags</FormLabel>
+                <InputGroup>
+                  <Input
+                    type="text"
+                    placeholder="Productivity"
+                    id="tag-input"
+                    name="tag"
+                    value={formData.tag}
+                    onChange={handleFormDataChange}
+                    pr="4.5rem"
+                  />
+                  <InputRightElement width="4.5rem">
+                    <Button h="1.75rem" size="sm" onClick={addTag}>
+                      Add
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+                <FormHelperText>
+                  {formData.tags.map((text) => (
+                    <Tag
+                      key={text}
+                      borderRadius="full"
+                      variant="solid"
+                      colorScheme="gray"
+                    >
+                      <TagLabel>{text}</TagLabel>
+                      <TagCloseButton onClick={() => removeTag(text)} />
+                    </Tag>
+                  ))}
+                </FormHelperText>
+              </FormControl>
+              <FormControl>
+                <FormLabel>Cost</FormLabel>
+                <InputGroup>
+                  <InputLeftAddon>$</InputLeftAddon>
+                  <Input
+                    type="text"
+                    value={formData.cost}
+                    name="cost"
+                    onChange={handleFormDataChange}
+                    placeholder="0"
+                    maxLength={6}
+                  />
+                </InputGroup>
+                <FormHelperText>Rough estimate</FormHelperText>
+              </FormControl>
+            </Flex>
+          </Flex>
+        </Box>
+        <Box>
+          <Flex direction={["column", "column", "column", "row"]} mb="50px">
+            <Flex
+              align="center"
+              flex="1"
+              bg="gray.100"
+              mr="20px"
+              borderRadius="8px"
+              minH="99px"
+              my="20px"
+            >
+              <Box m="auto">
+                <Text fontWeight="600">Preview - Coming Soon</Text>
+              </Box>
+            </Flex>
+            <Flex align="center" flex="1">
+              <FormControl flex="1" mr="20px">
+                <FormLabel>Hours</FormLabel>
+                <Input
+                  type="text"
+                  value={formData.hours}
+                  name="hours"
+                  onChange={handleFormDataChange}
+                  placeholder="2"
+                  maxLength={5}
+                />
+                <FormHelperText>Rough estimate</FormHelperText>
+              </FormControl>
+              <Button
+                onClick={submitPage}
+                flex="1"
+                isLoading={isLoadingPostRequest}
+              >
+                Submit Page
+              </Button>
+            </Flex>
+          </Flex>
+        </Box>
+      </>
     </>
   );
 };
