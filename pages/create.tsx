@@ -20,6 +20,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
+import PageCard from "./../components/PageCard";
 
 const Create: NextPage = () => {
   const toast = useToast();
@@ -214,6 +215,8 @@ const Create: NextPage = () => {
                       borderRadius="full"
                       variant="solid"
                       colorScheme="gray"
+                      mr="4px"
+                      mb="4px"
                     >
                       <TagLabel>{text}</TagLabel>
                       <TagCloseButton onClick={() => removeTag(text)} />
@@ -240,41 +243,43 @@ const Create: NextPage = () => {
           </Flex>
         </Box>
         <Box>
-          <Flex direction={["column", "column", "column", "row"]} mb="50px">
+          <Flex direction={["column", "column", "row"]} mb="50px">
             <Flex
               align="center"
               flex="1"
-              bg="gray.100"
-              mr={["0px", "0px", "0px", "20px"]}
+              mr={["0px", "0px", "20px"]}
               borderRadius="8px"
-              minH="99px"
               my="20px"
             >
-              <Box m="auto">
-                <Text fontWeight="600">Preview - Coming Soon</Text>
-              </Box>
+              <PageCard
+                image={formData.image}
+                tags={formData.tags}
+                title={formData.title}
+              />
             </Flex>
-            <Flex align="center" flex="1">
-              <FormControl flex="1" mr="20px">
-                <FormLabel>Hours</FormLabel>
-                <Input
-                  type="text"
-                  value={formData.hours}
-                  name="hours"
-                  onChange={handleFormDataChange}
-                  placeholder="2"
-                  maxLength={5}
-                />
-                <FormHelperText>Rough estimate</FormHelperText>
-              </FormControl>
-              <Button
-                onClick={submitPage}
-                flex="1"
-                isLoading={isLoadingPostRequest}
-              >
-                Submit Page
-              </Button>
-            </Flex>
+            <Box flex="1">
+              <Flex align="center">
+                <FormControl flex="1" mr="20px">
+                  <FormLabel>Hours</FormLabel>
+                  <Input
+                    type="text"
+                    value={formData.hours}
+                    name="hours"
+                    onChange={handleFormDataChange}
+                    placeholder="2"
+                    maxLength={5}
+                  />
+                  <FormHelperText>Rough estimate</FormHelperText>
+                </FormControl>
+                <Button
+                  onClick={submitPage}
+                  flex="1"
+                  isLoading={isLoadingPostRequest}
+                >
+                  Submit Page
+                </Button>
+              </Flex>
+            </Box>
           </Flex>
         </Box>
       </>
