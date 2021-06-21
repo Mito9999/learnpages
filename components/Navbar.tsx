@@ -16,12 +16,12 @@ const Navbar = () => {
         >
           {colorMode === "light" ? <FaMoon /> : <FaSun />}
         </Button>
-        <Button variant="outline">
-          <Link href="/create">Create Page</Link>
-        </Button>
-        <Button>
-          <Link href="/signin">Sign In</Link>
-        </Button>
+        <Link href="/create" passHref>
+          <Button variant="outline">Create Page</Button>
+        </Link>
+        <Link href="/signin" passHref>
+          <Button>Sign In</Button>
+        </Link>
       </HStack>
     </Flex>
   );

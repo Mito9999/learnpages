@@ -96,10 +96,10 @@ const Create: NextPage = () => {
   });
 
   const handleFormDataChange = (e: any) => {
-    const { name, value } = e.target;
+    const { name, value }: { name: string; value: string } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: name === "uid" ? value.toLowerCase().replace(/ /g, "-") : value,
     }));
   };
 

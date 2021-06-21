@@ -22,7 +22,13 @@ const Home: NextPage<Props> = ({ pages }) => {
       <SimpleGrid columns={[1, 2, 3]} spacing={6}>
         {pages.map((page: Data) => (
           <Link key={page.uid} href={`/learn/${page.uid}`} passHref={true}>
-            <PageCard image={page.image} tags={page.tags} title={page.title} />
+            <div>
+              <PageCard
+                image={page.image}
+                tags={page.tags}
+                title={page.title}
+              />
+            </div>
           </Link>
         ))}
       </SimpleGrid>
